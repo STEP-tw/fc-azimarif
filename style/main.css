@@ -8,12 +8,12 @@ header {
   height: 75px;
 }
 
-h1 {
+.catalogHeading {
   text-align: center;
   color: orange;
 }
 
-main {
+.mainContent {
   display: flex;
 }
 
