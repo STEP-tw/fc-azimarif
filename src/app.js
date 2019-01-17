@@ -1,32 +1,33 @@
 const fs = require('fs');
 
-const pageNotFound = `<html><img style="margin-left:220px;" src="./images/error.jpg"></html>`;
-
 const app = (req, res) => {
   let url = getURL(req);
   readURLData(url, res);
 };
 
-const getURL = function(request) {
-  let url = '.' + request.url;
+const getURL = function (request) {
+  let url = './public' + request.url;
   if (request.url == '/') {
-    url = './index.html';
+    url = './public/index.html';
   }
   return url;
 };
 
-const sendResponse = function(response, content, code) {
+const sendResponse = function (response, content, code) {
   response.statusCode = code;
   response.write(content);
   response.end();
 };
 
-const readURLData = function(filePath, response) {
+const readURLData = function (filePath, response) {
+  const PAGE_NOT_FOUND = `<html><img style="margin-left:220px;" src="/images/error.jpg"></html>`;
+  let statusCode = 200;
   fs.readFile(filePath, (error, content) => {
     if (error) {
-      return sendResponse(response, pageNotFound, 404);
+      content = PAGE_NOT_FOUND;
+      statusCode = 404;
     }
-    return sendResponse(response, content, 200);
+    sendResponse(response, content, statusCode);
   });
 };
 
