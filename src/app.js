@@ -1,7 +1,9 @@
 const fs = require('fs');
-const { displayGuestBookPage, addComment } = require('./guestBook.js');
+const { displayGuestBookPage, saveComment } = require('./guestBook.js');
 const { Express } = require('./express.js');
+const { Comment } = require('./comment.js');
 const app = new Express();
+const comment = new Comment();
 
 const requestHandler = (req, res) => {
   let url = getURL(req);
@@ -34,8 +36,8 @@ const readURLData = function(filePath, response) {
   });
 };
 
-app.get('/guestBook.html', displayGuestBookPage);
-app.post('/guestBook.html', addComment);
+app.get('/guestBook.html', displayGuestBookPage.bind(null, comment));
+app.post('/guestBook.html', saveComment.bind(null, comment));
 app.use(requestHandler);
 
 module.exports = app.requestListener.bind(app);
