@@ -1,10 +1,9 @@
-<!DOCTYPE html>
+const GUEST_PAGE = `<!DOCTYPE html>
 <html>
 
 <head>
   <title>Guest Book</title>
   <link rel="stylesheet" type="text/css" href="/style/main.css" />
-  <script src="/script/main.js"></script>
 </head>
 
 <body>
@@ -14,7 +13,7 @@
   <main>
     <section>
       <h1>Leave a comment</h1>
-      <form action="/script/guestBook.js" method="POST">
+      <form method="POST">
         <div>
           <label class="detailName">Name:</label>
           <input class="userName" type="text" name="name">
@@ -29,9 +28,13 @@
       </form>
     </section>
     <section id="commentSection" class="commentList">
-      <p>DATETIME_NAME_COMMENTS_LIST</p>
-    </section>
-  </main>
-</body>
+    <table>
+    <tr><td>DATETIME</td> <td>NAME</td> <td>COMMENT</td></tr>`;
 
-</html>
+const GUEST_PAGE_FOOTER = `</table>
+</section>
+</main> 
+</body>
+</html>`;
+
+module.exports = { GUEST_PAGE, GUEST_PAGE_FOOTER }
