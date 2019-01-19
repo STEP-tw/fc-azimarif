@@ -1,18 +1,21 @@
 const fs = require('fs');
+const USER_COMMENT_FILE = './src/data.json';
+const FILE_ENCODING ='utf-8';
 
 class Comment {
   constructor() {
-    fs.readFile('./src/data.json', 'utf-8', (error, content) => {
-      this.jsonFile = JSON.parse(content);
+    fs.readFile(USER_COMMENT_FILE, FILE_ENCODING, (error, content) => {
+      this.userComments = JSON.parse(content);
     });
   }
+
   getComments() {
-    return this.jsonFile;
+    return this.userComments;
   }
 
   addComment(comment) {
-    this.jsonFile.unshift(comment);
-    fs.writeFile('./src/data.json', JSON.stringify(this.jsonFile), 'utf-8', err => { });
+    this.userComments.unshift(comment);
+    fs.writeFile(USER_COMMENT_FILE, JSON.stringify(this.userComments), FILE_ENCODING, err => { });
   }
 }
 

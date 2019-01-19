@@ -4,6 +4,8 @@ const { Express } = require('./express.js');
 const { Comment } = require('./comment.js');
 const app = new Express();
 const comment = new Comment();
+const ROOT_DIR = './public';
+const HOME_PAGE = '/index.html'
 
 const requestHandler = (req, res) => {
   let url = getURL(req);
@@ -11,9 +13,9 @@ const requestHandler = (req, res) => {
 };
 
 const getURL = function(request) {
-  let url = './public' + request.url;
+  let url = ROOT_DIR + request.url;
   if (request.url == '/') {
-    url = './public/index.html';
+    url = ROOT_DIR + HOME_PAGE;
   }
   return url;
 };

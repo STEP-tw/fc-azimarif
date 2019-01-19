@@ -1,7 +1,10 @@
 const { GUEST_PAGE, GUEST_PAGE_FOOTER } = require('./htmlTemplates.js');
+const KEYS_SEPERATOR = '&';
+const KEY_VALUE_SEPERATOR = '=';
+const NEW_LINE = '\n';
 
 const displayGuestBookPage = function(comment, request, response) {
-  let userComments = getUserComments(comment.getComments()).join('');
+  let userComments = getUserComments(comment.getComments()).join(NEW_LINE);
   let guestBookPage = GUEST_PAGE + userComments + GUEST_PAGE_FOOTER;
   response.write(guestBookPage);
   response.end();
@@ -14,7 +17,7 @@ const saveComment = function(comment, request, response) {
   });
 
   request.on('end', () => {
-    content += '&datetime=' + new Date().toLocaleString();
+    content = content + KEYS_SEPERATOR + 'datetime' + KEY_VALUE_SEPERATOR + new Date().toLocaleString();
     let userComment = getUserData(content);
     comment.addComment(userComment);
     displayGuestBookPage(comment, request, response);
@@ -23,15 +26,15 @@ const saveComment = function(comment, request, response) {
 
 const getUserData = function(content) {
   let args = {};
-  const splitKeyValue = pair => pair.split('=');
+  const splitKeyValue = pair => pair.split(KEY_VALUE_SEPERATOR);
   const assignKeyValueToArgs = ([key, value]) => (args[key] = value);
-  content.split('&').map(splitKeyValue).forEach(assignKeyValueToArgs);
+  content.split(KEYS_SEPERATOR).map(splitKeyValue).forEach(assignKeyValueToArgs);
   return args;
 };
 
-const getUserComments = function(content) {
-  let userComments = content;
-  return userComments.reverse().map(comment => createRow(comment));
+const getUserComments = function (content) {
+  let userComments = content.reverse();
+  return userComments.map(comment => createRow(comment));
 };
 
 const createRow = function(data) {
