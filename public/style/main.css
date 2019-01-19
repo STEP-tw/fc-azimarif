@@ -18,7 +18,7 @@ header {
 }
 
 .nav {
-  margin: auto auto;
+  margin: auto 10px;
 }
 
 .link {
@@ -36,7 +36,7 @@ header {
 }
 
 .button {
-  width: 65px;
+  width: 100px;
   font-size: 20px;
 }
 
