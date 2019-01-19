@@ -35,15 +35,7 @@ const GUEST_PAGE = `<!DOCTYPE html>
 const GUEST_PAGE_FOOTER = `</table>
 </section>
 </main> 
-<script>
-const loadComments = function () {
-  fetch('/guestBook.html').then(res => res.text()).then(htmlPage => {
-    const dom = new DOMParser();
-    const newDocument = dom.parseFromString(htmlPage, 'text/html');
-    document.getElementById("commentSection").innerHTML = newDocument.getElementById("commentSection").innerHTML;
-  });
-}
-</script>
+<script src="/script/loadComments.js"></script>
 </body>
 </html>`;
 
