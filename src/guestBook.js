@@ -1,10 +1,11 @@
 const { GUEST_PAGE, GUEST_PAGE_FOOTER } = require('./htmlTemplates.js');
 const KEYS_SEPERATOR = '&';
 const KEY_VALUE_SEPERATOR = '=';
-const NEW_LINE = '\n';
+const SPACE = ' ';
+const PATTERN_TO_REPLACE = new RegExp(/\+/, "g");
 
 const displayGuestBookPage = function(comment, request, response) {
-  let userComments = getUserComments(comment.getComments()).join(NEW_LINE);
+  let userComments = getUserComments(comment.getComments()).join(SPACE);
   let guestBookPage = GUEST_PAGE + userComments + GUEST_PAGE_FOOTER;
   response.write(guestBookPage);
   response.end();
@@ -12,9 +13,7 @@ const displayGuestBookPage = function(comment, request, response) {
 
 const saveComment = function(comment, request, response) {
   let content = '';
-  request.on('data', chunk => {
-    content += chunk;
-  });
+  request.on('data', chunk => { content += chunk; });
 
   request.on('end', () => {
     content = content + KEYS_SEPERATOR + 'datetime' + KEY_VALUE_SEPERATOR + new Date().toLocaleString();
@@ -32,13 +31,21 @@ const getUserData = function(content) {
   return args;
 };
 
-const getUserComments = function (content) {
-  let userComments = content.reverse();
-  return userComments.map(comment => createRow(comment));
+const getUserComments = function(content) {
+  return content.map(comment => createRow(comment));
 };
 
-const createRow = function(data) {
-  return `<tr><td>${data.name}</td> <td> ${data.comment} </td> <td> ${data.datetime}</td></tr>`;
+const createRow = function (data) {
+  let { name, comment } = decodeUserData(data);
+  return `<tr><td>${ data.datetime }</td> 
+  <td> ${ name } </td> 
+  <td> ${ comment }</td></tr>`;
 };
+
+const decodeUserData = function (data) {
+  let name = decodeURIComponent(data.name.replace(PATTERN_TO_REPLACE, SPACE));
+  let comment = decodeURIComponent(data.comment.replace(PATTERN_TO_REPLACE, SPACE));
+  return { name, comment };
+}
 
 module.exports = { displayGuestBookPage, saveComment };
