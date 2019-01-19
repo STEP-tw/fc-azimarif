@@ -4,13 +4,12 @@ const FILE_ENCODING = 'utf-8';
 
 class Comment {
   constructor() {
-    this.readCommentFromFile();
+    this.userComments = [];
   }
 
   readCommentFromFile() {
-    fs.readFile(USER_COMMENT_FILE, FILE_ENCODING, (error, content) => {
-      this.userComments = JSON.parse(content);
-    });
+    let userComments = fs.readFileSync(USER_COMMENT_FILE, FILE_ENCODING);
+    this.userComments = JSON.parse(userComments);
   }
 
   getComments() {
@@ -23,7 +22,7 @@ class Comment {
   }
 
   writeCommentToFile() {
-    fs.writeFile(USER_COMMENT_FILE, JSON.stringify(this.userComments), FILE_ENCODING, err => {});
+    fs.writeFile(USER_COMMENT_FILE, JSON.stringify(this.userComments), FILE_ENCODING, err => { });
   }
 }
 

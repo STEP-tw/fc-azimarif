@@ -38,6 +38,11 @@ const readURLData = function(filePath, response) {
   });
 };
 
+const loadUserComments = function(){
+  comment.readCommentFromFile();
+}
+
+loadUserComments();
 app.get('/guestBook.html', displayGuestBookPage.bind(null, comment));
 app.post('/guestBook.html', saveComment.bind(null, comment));
 app.use(requestHandler);
