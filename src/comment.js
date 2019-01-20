@@ -1,6 +1,5 @@
 const fs = require('fs');
-const USER_COMMENT_FILE = './data/userComments.json';
-const FILE_ENCODING = 'utf-8';
+const { USER_COMMENT_FILE, FILE_ENCODING } = require('./constants.js');
 
 class Comment {
   constructor() {

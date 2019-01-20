@@ -1,23 +1,25 @@
 const { GUEST_PAGE, GUEST_PAGE_FOOTER } = require('./htmlTemplates.js');
-const KEYS_SEPERATOR = '&';
-const KEY_VALUE_SEPERATOR = '=';
-const SPACE = ' ';
-const PATTERN_TO_REPLACE = new RegExp(/\+/, "g");
+const {
+  KEYS_SEPERATOR,
+  KEY_VALUE_SEPERATOR,
+  SPACE,
+  PLUS_REGEXP
+} = require('./constants.js');
 
 const displayGuestBookPage = function(comment, request, response) {
-  let userComments = getUserComments(comment.getComments()).join(SPACE);
-  let guestBookPage = GUEST_PAGE + userComments + GUEST_PAGE_FOOTER;
+  const userComments = getUserComments(comment.getComments()).join(SPACE);
+  const guestBookPage = GUEST_PAGE + userComments + GUEST_PAGE_FOOTER;
   response.write(guestBookPage);
   response.end();
 };
 
 const saveComment = function(comment, request, response) {
   let content = '';
-  request.on('data', chunk => { content += chunk; });
-
+  request.on('data', chunk => { content = content + chunk; });
   request.on('end', () => {
-    content = content + KEYS_SEPERATOR + 'datetime' + KEY_VALUE_SEPERATOR + new Date().toLocaleString();
-    let userComment = getUserData(content);
+    const dateTime = new Date().toLocaleString();
+    content = content + KEYS_SEPERATOR + 'datetime' + KEY_VALUE_SEPERATOR + dateTime;
+    const userComment = getUserData(content);
     comment.addComment(userComment);
     displayGuestBookPage(comment, request, response);
   });
@@ -35,17 +37,17 @@ const getUserComments = function(content) {
   return content.map(comment => createRow(comment));
 };
 
-const createRow = function (data) {
-  let { name, comment } = decodeUserData(data);
-  return `<tr><td>${ data.datetime }</td> 
-  <td> ${ name } </td> 
-  <td> ${ comment }</td></tr>`;
+const createRow = function(data) {
+  const { name, comment } = decodeUserData(data);
+  return `<tr><td>${data.datetime}</td> 
+  <td> ${name} </td> 
+  <td> ${comment}</td></tr>`;
 };
 
-const decodeUserData = function (data) {
-  let name = decodeURIComponent(data.name.replace(PATTERN_TO_REPLACE, SPACE));
-  let comment = decodeURIComponent(data.comment.replace(PATTERN_TO_REPLACE, SPACE));
+const decodeUserData = function(data) {
+  const name = decodeURIComponent(data.name.replace(PLUS_REGEXP, SPACE));
+  const comment = decodeURIComponent(data.comment.replace(PLUS_REGEXP, SPACE));
   return { name, comment };
-}
+};
 
 module.exports = { displayGuestBookPage, saveComment };

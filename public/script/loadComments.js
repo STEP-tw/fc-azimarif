@@ -4,7 +4,7 @@ const loadComments = function () {
     .then(htmlPage => {
       let newDocument = document.createElement('html');
       newDocument.innerHTML = htmlPage;
-      document.getElementById('commentSection').innerHTML =
+      document.getElementsByClassName('commentList')[0].innerHTML =
         newDocument.getElementsByClassName('commentList')[0].innerHTML;
     });
 };

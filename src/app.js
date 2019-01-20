@@ -1,14 +1,18 @@
 const fs = require('fs');
 const { displayGuestBookPage, saveComment } = require('./guestBook.js');
+const {
+  ROOT_DIR,
+  HOME_PAGE,
+  STATUS_OK,
+  STATUS_NOT_FOUND
+} = require('./constants.js');
 const { Express } = require('./express.js');
 const { Comment } = require('./comment.js');
 const app = new Express();
 const comment = new Comment();
-const ROOT_DIR = './public';
-const HOME_PAGE = '/index.html'
 
 const requestHandler = (req, res) => {
-  let url = getURL(req);
+  const url = getURL(req);
   readURLData(url, res);
 };
 
@@ -28,11 +32,11 @@ const sendResponse = function(response, content, code) {
 
 const readURLData = function(filePath, response) {
   const PAGE_NOT_FOUND = `<html><img style="margin-left:220px;" src="/images/error.jpg"></html>`;
-  let statusCode = 200;
+  let statusCode = STATUS_OK;
   fs.readFile(filePath, (error, content) => {
     if (error) {
       content = PAGE_NOT_FOUND;
-      statusCode = 404;
+      statusCode = STATUS_NOT_FOUND;
     }
     sendResponse(response, content, statusCode);
   });
