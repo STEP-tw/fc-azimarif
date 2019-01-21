@@ -26,7 +26,7 @@ const GUEST_PAGE = `<!DOCTYPE html>
           <input type="submit" value="Submit" class="button">
         </div>
       </form>
-      <button id="reload" onclick="loadComments()">&#x21bb</button>
+      <button id="refreshButton">&#x21bb</button>
     </section>
     <section id="commentSection" class="commentList">
     <table>

@@ -11,9 +11,9 @@ const { Comment } = require('./comment.js');
 const app = new Express();
 const comment = new Comment();
 
-const requestHandler = (req, res) => {
-  const url = getURL(req);
-  readURLData(url, res);
+const requestHandler = (request, response) => {
+  const url = getURL(request);
+  readURLData(url, response);
 };
 
 const getURL = function(request) {

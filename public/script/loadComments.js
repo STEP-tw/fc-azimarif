@@ -1,12 +1,18 @@
-const loadComments = function () {
+const getRefreshButton = document => document.getElementById('refreshButton');
+const getCommentSection = document => document.getElementById('commentSection');
+
+const loadComments = function (document) {
   fetch('/guestBook.html')
-    .then(res => res.text())
-    .then(htmlPage => {
-      let newDocument = document.createElement('html');
-      newDocument.innerHTML = htmlPage;
-      document.getElementsByClassName('commentList')[0].innerHTML =
-        newDocument.getElementsByClassName('commentList')[0].innerHTML;
-    });
+    .then(response => response.text())
+    .then(data => {
+      const newDocument = new DOMParser().parseFromString(data, 'text/html');
+      getCommentSection(document).innerHTML = getCommentSection(newDocument).innerHTML;
+    })
+    .catch(() => getCommentSection(document).innerHTML = 'Error loading the comments...');
 };
 
-window.onload = loadComments;
+const initialize = function() {
+  getRefreshButton(document).onclick = loadComments.bind(null, document);
+};
+
+window.onload = initialize;

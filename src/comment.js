@@ -30,7 +30,7 @@ class Comment {
   }
 
   writeCommentToFile(comments) {
-    fs.writeFileSync(USER_COMMENT_FILE, JSON.stringify(comments));
+    fs.writeFile(USER_COMMENT_FILE, JSON.stringify(comments), err => { })
   }
 }
 
