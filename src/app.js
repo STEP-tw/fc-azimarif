@@ -1,5 +1,5 @@
 const fs = require('fs');
-const { displayGuestBookPage, saveComment } = require('./guestBook.js');
+const { getUserComments } = require('./guestBook.js');
 const {
   ROOT_DIR,
   HOME_PAGE,
@@ -16,7 +16,7 @@ const requestHandler = (request, response) => {
   readURLData(url, response);
 };
 
-const getURL = function(request) {
+const getURL = function (request) {
   let url = ROOT_DIR + request.url;
   if (request.url == '/') {
     url = ROOT_DIR + HOME_PAGE;
@@ -24,13 +24,13 @@ const getURL = function(request) {
   return url;
 };
 
-const sendResponse = function(response, content, code) {
+const sendResponse = function (response, content, code) {
   response.statusCode = code;
   response.write(content);
   response.end();
 };
 
-const readURLData = function(filePath, response) {
+const readURLData = function (filePath, response) {
   const PAGE_NOT_FOUND = `<html><img style="margin-left:220px;" src="/images/error.jpg"></html>`;
   let statusCode = STATUS_OK;
   fs.readFile(filePath, (error, content) => {
@@ -42,13 +42,28 @@ const readURLData = function(filePath, response) {
   });
 };
 
-const loadUserComments = function(){
-  comment.readCommentFromFile();
+const loadUserComments = function () {
+  comment.load();
+}
+
+const displayComments = function (request, response) {
+  let userComments = getUserComments(comment.getData());
+  sendResponse(response, userComments, STATUS_OK);
+}
+
+const writeCommments = function (request, response) {
+  let content = '';
+  request.on('data', (chunk) => content = content + chunk);
+  request.on('end', () => {
+    const userComment = JSON.parse(content);
+    comment.add(userComment);
+    displayComments(request, response);
+  });
 }
 
 loadUserComments();
-app.get('/guestBook.html', displayGuestBookPage.bind(null, comment));
-app.post('/guestBook.html', saveComment.bind(null, comment));
+app.get('/comments', displayComments);
+app.post('/comments', writeCommments);
 app.use(requestHandler);
 
 module.exports = app.requestListener.bind(app);

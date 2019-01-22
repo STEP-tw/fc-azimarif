@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Guest Book</title>
+  <link rel="stylesheet" type="text/css" href="/style/main.css" />
+</head>
+
+<body>
+  <header>
+    <h1 class="heading"> <a class="link" href="index.html">&lt;&lt;</a> Guest Book</h1>
+  </header>
+  <main>
+    <section>
+      <h1>Leave a comment</h1>
+      <div>
+        <div>
+          <label class="detailName">Name:</label>
+          <input id="txtName" class="userName" type="text" name="name" required>
+        </div>
+        <div>
+          <label class="detailName">Comment:</label>
+          <textarea id="txtComment" name="comment" rows="5" cols="30"></textarea>
+        </div>
+        <div>
+          <button id="btnSubmit" class="button">Submit</button>
+        </div>
+      </div>
+    </section>
+    <section class="commentList">
+      <div>
+        <label>Comments</label>
+        <button id="refreshButton">&#x21bb</button>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <td>DATETIME</td>
+            <td>NAME</td>
+            <td>COMMENT</td>
+          </tr>
+        </thead>
+        <tbody id="commentSection"></tbody>
+      </table>
+    </section>
+  </main>
+  <script src="/script/loadComments.js"></script>
+</body>
+
+</html>

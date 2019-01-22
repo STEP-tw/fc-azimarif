@@ -6,30 +6,30 @@ class Comment {
     this.userComments = [];
   }
 
-  isCommentFileExists() {
+  isFileExists() {
     return fs.existsSync(USER_COMMENT_FILE);
   }
 
-  readCommentFromFile() {
-    if (this.isCommentFileExists()) {
+  load() {
+    if (this.isFileExists()) {
       let userComments = fs.readFileSync(USER_COMMENT_FILE, FILE_ENCODING);
       this.userComments = JSON.parse(userComments);
       return;
     }
-    this.writeCommentToFile([]);
+    this.writeToFile([]);
     this.userComments = [];
   }
 
-  getComments() {
+  getData() {
     return this.userComments;
   }
 
-  addComment(comment) {
+  add(comment) {
     this.userComments.unshift(comment);
-    this.writeCommentToFile(this.userComments);
+    this.writeToFile(this.userComments);
   }
 
-  writeCommentToFile(comments) {
+  writeToFile(comments) {
     fs.writeFile(USER_COMMENT_FILE, JSON.stringify(comments), err => { })
   }
 }

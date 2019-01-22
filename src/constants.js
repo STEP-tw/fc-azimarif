@@ -1,5 +1,3 @@
-const KEYS_SEPERATOR = '&';
-const KEY_VALUE_SEPERATOR = '=';
 const SPACE = ' ';
 const PLUS_REGEXP = new RegExp(/\+/, 'g');
 const ROOT_DIR = './public';
@@ -10,8 +8,6 @@ const STATUS_OK = 200;
 const STATUS_NOT_FOUND = 404;
 
 module.exports = {
-  KEYS_SEPERATOR,
-  KEY_VALUE_SEPERATOR,
   SPACE,
   PLUS_REGEXP,
   ROOT_DIR,
